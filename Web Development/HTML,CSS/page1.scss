@@ -1,0 +1,12 @@
+$len: 50%;
+$pad: 20px;
+$colour: orange;
+body{
+p{
+  color:$colour;
+}
+  img{
+    width: $len;
+    padding: $pad;
+  }
+}

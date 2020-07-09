@@ -1,0 +1,24 @@
+#quote {
+  font-style: italic; }
+
+body > h1 {
+  position: relative;
+  text-align: center;
+  font-family: "Times New Roman";
+  padding-top: 20px;
+  padding-bottom: 50px; }
+
+.row {
+  padding: 10px; }
+
+#end {
+  writing-mode: vertical-rl;
+  position: relative;
+  text-align: center;
+  left: 45%;
+  right: 50%;
+  font-size: 40px;
+  font-family: Courier;
+  padding-top: 20px; }
+
+/*# sourceMappingURL=page4.css.map */

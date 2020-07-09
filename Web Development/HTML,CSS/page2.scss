@@ -1,0 +1,33 @@
+#list{
+        font-style: italic;
+  }
+
+
+@media (max-width: 600px)
+{
+  body
+  {
+
+    background-image: url(https://etc.usf.edu/clipart/4600/4653/tenor-saxophone_1_lg.gif);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+
+ }
+}
+
+@media (min-width: 601px)
+{
+  body
+  {
+
+    background-image: url(https://www.netclipart.com/pp/m/22-220383_excelent-instruments-clipart-trombone-instruments-trombone-clipart.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+ul{
+  color: green;
+  font-size: 18px;
+}
