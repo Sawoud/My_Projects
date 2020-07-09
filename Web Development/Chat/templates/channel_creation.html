@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+  <form method = "POST" action = "/channel_creation">
+    <h3>Create channel</h3>
+      <div class = "form-group">
+        <input type = "text" name = "CHANNEL NAME">
+      </div>
+    <input class = "btn btn-primary" type = "submit" value="submit">
+    </form>
+    <p></p>
+    <a href = "channel_list.html">Click Here for the room listings</a>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+<a href="#" id="createCookie" data="0"><i class=" icon-bin" ></i></a>
+<button type = "button" onclick = "RestoreChat()">Click here to get back to your latest chat page</button>
+<script type="text/javascript"  src="{{ url_for('static', filename='scripts/store_cookie.js') }}"></script>
+</html>

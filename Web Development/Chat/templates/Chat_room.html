@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>{{channel.name}}</title>
+  </head>
+  <a href = "{{url_for('index')}}">Click Here to return to the channel creation page</a>
+  <p></p>
+  <a href = "{{url_for('show')}}">Click Here for the room listings</a>
+
+  <body>
+    <h3 style='color: #ccc;font-size: 30px;'>No New message yet..</h3>
+    <div class="message_holder">
+      {% for i in range (channel.msgs.username|length) %}
+      <div><b style="color: #000"> {{channel.msgs.username[i]}} </b> {{channel.msgs.text[i]}} <b style="color: #ffcccc"> ({{channel.msgs.time[i]}})</b></div>
+
+      {% endfor %}
+    </div>
+
+    <form action="" method="POST">
+      <input type="text" class="message" placeholder="Messages"/>
+      <a href=# id=test><input type="submit"/></a>
+    </form>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <p>Change background color to:</p>
+
+    <button type="button" onclick="changeColor()">Click Here to Change Background Color</button>
+    <button type="button" onclick="changeBack()">Click Here to Change Background Image</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+    <a href="#" id="ChannelNo" data="{{i}}"><i class=" icon-bin" ></i></a>
+    <a href="#" id="createCookie" data="1"><i class=" icon-bin" ></i></a>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='scripts/store_cookie.js') }}"></script>
+        <script>storepage();</script>
+
+<script>
+function changeColor() {
+  let color = prompt("prompt", "Please Input the new color you would like");
+  document.body.style.backgroundColor = color;
+}
+
+function changeBack() {
+  let img = prompt("prompt", "Please Input the location of your image");
+  document.body.style.backgroundPosition="center";
+  document.body.style.backgroundRepeat = "no-repeat";
+  document.body.style.backgroundSize = "100%";
+
+  document.body.style.backgroundImage = "url('"+img+"')";
+}
+
+
+</script>
+
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+
+      socket.on( 'connect', function()
+      {
+        let user_name = Cookies.get('name')
+
+        socket.emit( 'my event',
+        {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e )
+        {
+          e.preventDefault()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+
+
+      socket.on( 'my response', function( msg )
+      {
+        console.log( msg )
+        var ts = new Date();
+        var ts_s = ts.toGMTString()
+
+        if( typeof msg.user_name !== 'undefined' )
+        {
+          $.get( "/getinfo/"+"{{i}}"+ "/"+ msg.user_name + "/" + msg.message + "/"+ ts_s );
+
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+ '<b style="color: #ffcccc"> (' + ts_s+ ')</b>'+'</div>' )
+
+        }
+
+      })
+
+    </script>
+
+  </body>
+  </html>

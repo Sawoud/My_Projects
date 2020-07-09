@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<a href = "{{url_for('index')}}">Click Here to return to the channel creation page</a>
+<p></p>
+<p>{{info}}</p>
+<p></p>
+
+<body>
+{% for i in range (channels|length) %}
+</h4><br><a href = "{{url_for('chat', Channel_no = i)}}"> {{channels[i].name}}</a></br></h4>
+
+{% endfor %}
+</body>
+</html>
