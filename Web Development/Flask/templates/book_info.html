@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<title>{{book[0].title}}</title>
+</head>
+{%extends 'layout.html'%}
+
+			{% block body %}
+
+			<body>
+				<h3>Results</h3>
+					<p>Isbn: {{book[0].isbn}}</p>
+					<p>Title: {{book[0].title}}</p>
+					<p>Author: {{book[0].author}}</p>
+					<p>Year: {{book[0].year}}</p>
+
+					<p>Here are the Goodreads Information:</p>
+					<p>{{res.json()}}</p>
+					<form method = "POST" action = "{{(url_for('review', book_title = book[0].title))}}">
+						<h6>If you would like to submit a review please fill out and submit the following information !</h6>
+						<p>Rating:</p>
+						<div class = "form-group">
+							<input type="number" name = "rating" min="0" max="5">
+						</div>
+
+						<p>Password:</p>
+						<div class = "form-group">
+							<textarea input type = "text" name = "description" rows="4" cols="50"></textarea>
+
+						</div>
+					<input class = "btn btn-primary" type = "submit" value="submit">
+					</form>
+					<p></p>
+					<h6>Here are reviews submitted by other users:</h6>
+					{% for review in book[0].reviews%}
+					<p>- {{review.rating}}</p>
+					<p>{{review.text}}</p>
+
+					{% endfor %}
+					{% endblock %}
+
+								</body>
+
+
+</html>

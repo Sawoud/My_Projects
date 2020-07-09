@@ -1,0 +1,3 @@
+API Key
+key: wUkXP1iRIaKript47qrqA
+secret: kcEA8YdjOMj8jYhzhxDqlDEpB6fUE3ChvJLZI7apHs
