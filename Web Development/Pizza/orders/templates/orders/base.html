@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <body>
+{% for message in messages %}
+<div>{{message}}</div>
+{% endfor %}
+{% if user.is_authenticated %}
+
+<a href = "http://127.0.0.1:8000/logout">Logout</a>
+{% endif %}
+    </body>
+
+<div class="content">
+{% block content %}
+{% endblock %}
+</div>
+</html>
