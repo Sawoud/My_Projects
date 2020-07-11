@@ -1,0 +1,128 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.lab2_4;
+
+/**
+ *
+ * @author Sawoud
+ */
+public class HashTableQuad {
+    
+    private int [] table; // this table stores the entries
+    private int flag; // flag is the number of elements inserted into the table
+    private int size; // this is the size of the table
+    private double load; // this is the required load
+    private double actual_load; // this is the actual load
+    
+public HashTableQuad(int maxNum, double load)
+    {// this constructor declares an empty table
+        int size = (int)(maxNum/load);
+        if (isPrime(size) == false){size = findPrime(size);}// this function finds a prime number size
+        table = new int[size];
+        flag = 0; //0 since no elements in array
+        this.size = size;
+        this.load = load;
+        actual_load = 0;
+    }
+
+public int insert (int n){
+int probe = 0; // this variable checks how many times probing has occured
+if (isIn(n) == false){ // if the value is already in the function, nothing happens, otherwise
+if((flag == size) || actual_load >= load){rehash();}// if the actual load is more than the load, or the number of elemnts is equal to the size then rehashing 
+int h = n % table.length; // this line finds the hash value
+if(table[h] == 0){table[h] = n; flag++;probe++;
+actual_load = (flag+.1)/size;}
+    else{// if the number can not be inserted into the hash then the program uses quadratic probing to find it
+    int i = 0;
+    int v = 1;
+    int counter = 0;
+        while (probe < size*5){//if the the number is not found after five times the size, then it is assumed that the program is unable to find it
+        if(table[Math.abs((h+i)%table.length)] == 0){table[Math.abs((h+i)%table.length)] = n;flag++;
+        actual_load = (flag+.1)/size;probe++;break;}
+        else{v = v + 1; i = ((int)Math.pow(v,2));probe++;}
+        }
+    }
+}
+if(probe == (size*5)-1){System.out.println("Unable to insert number");}//this massege is returend so the user knows
+return probe;
+}
+
+
+public void callrehash(){this.rehash();}
+
+
+private void rehash(){
+int [] temp = new int [table.length];// temp gets the values of the hash table
+temp = table;
+this.size = findPrime(table.length*2); // an prime which is atleast double the size is found
+table = new int [this.size];
+actual_load = 0; // the actual load gets reset to 0
+for(int i = 0; i<temp.length; i++){ // all the values get inserted back
+insert(temp[i]);
+}
+}
+
+public boolean isIn(int n){
+boolean check = false;
+int h = n%table.length;
+
+if(table[h] == n){check = true;} // this function agains uses the same idea from insert to find the value
+else{
+
+    int i = 0;
+    int v = 1;
+    int flag_2 = 0;
+        while ((flag_2 < table.length*5)){
+        if(table[(h+i)%table.length] == n){check = true;break;}
+        else{v = v + 1; i = ((int)Math.pow(v,2))%table.length;flag_2++;}
+        }
+}
+
+    
+    
+return check;
+}
+
+public void printKeys(){
+    for(int i = 0; i < table.length; i++){System.out.println(table[i]);}
+}
+
+public void printKeysAndIndexes(){
+   System.out.println("\n");
+    for(int i = 0; i < table.length; i++){System.out.println(i+"  "+table[i]);}
+}
+
+
+public boolean isPrime(int x){ // this function determines if a number is a prime
+    boolean check = true;
+    for(int i = 2; i < x/2; i++ ){
+    if(x%i == 0){check = false;}
+    }
+    return check;
+}
+
+    public  int findPrime(int x){ // this function finds primes
+    
+    int prime = 1;
+    int i = 0;
+    int temp = 0;
+    while (true){
+        temp = x + i;
+        if(isPrime(temp) == true){prime = temp;break;}
+        i++;
+        
+    }
+        return prime;
+}
+
+    public int[] getTable(){return table;}  //these functions return the class values
+    public int getFlag(){return flag;}  
+    public int getSize(){return size;}  
+    public double getLoad(){return load;}  
+    public double getALoad(){return actual_load;}  
+
+    
+}

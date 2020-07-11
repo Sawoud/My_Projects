@@ -1,0 +1,136 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.lab2_5;
+
+/**
+ *
+ * @author Sawoud
+ */
+
+public class MaxHeap {
+    private static Integer [] list;
+    private static int size;
+    private static int capacity;
+    public MaxHeap(int n){size = 0;capacity = n; list = new Integer [n];}
+    
+    
+    public MaxHeap(Integer n[])
+    {
+        list = n;
+        capacity = size = n.length;
+        int x = (int)(n.length / 2);
+        x--;
+        for (int i = x; i >= 0; i--) { // this loop recurivley creates a max heap
+          RECMH(n, n.length, i);
+        }
+            
+    }
+ 
+    public static void RECMH(Integer list[], int len, int i)
+    {
+      	
+        int max = i; // the locations of the children and parent are located 
+        int l = 2*i + 1; 
+        int r = 2*i + 2;  
+ 
+        if (l < len && list[l] > list[max])
+            max = l; // if the left child is larger than the parent then the postions get swiched
+ 
+        if (r < len && list[r] > list[max])
+            max = r;// if the right child is larger than the parent then the postions get swiched
+ 
+      	
+        if (max != i)//if the value of largest got changed then
+            // the elements get switched
+        {
+            int temp = list[i];
+            list[i] = list[max];
+            list[max] = temp;
+ 
+            RECMH(list, len, max);
+        }
+    }
+    
+    
+   
+    //        
+ //   getSize() -- returns the number of elements in the array
+//* getCapacity() -- return the size of the array (maximum number of elements that we can have)    
+        public void insert(int n)
+        {// this line checks if the array is filled, if so it doubles it capacity
+            if(isRoom() == false){capacity = capacity*2;list = (Integer[])resizeArray(list,capacity);}
+            
+            list[size] = n;// in the last element n get inseted
+            
+            if (list[(int)(size/2)] != null && (n > list[(int)(size/2)])){ // if n is larger than its parent
+            int v = size;
+            
+            while(n > list[(int)(v/2)]){// the postions get switched
+            int temp = list[v];
+            list[v] = list[v/2];
+            list[v/2] = temp;
+            v = (int)(v/2);
+            }
+            }  
+            size++;//the size get increased
+
+        }
+        
+        
+        
+        private static int deleteMax()
+        {
+            int temp = list[0];//the first element gets deleted
+            for(int i = 0; i < list.length-1;i++){
+            list[i] = list[i+1];// the array gets left shifted by 1 postion
+            }
+            return temp;
+        }
+        
+        public static void heapsort(Integer [] arrayToSort)
+        {
+        list = arrayToSort;
+        capacity = size = arrayToSort.length;
+        int x = (int)(list.length / 2);
+        x--;
+        for (int i = x; i >= 0; i--) { // this loop recurivley creates a max heap
+          RECMH(list, list.length, i);
+        }
+        }
+        
+        public boolean isRoom()
+        {
+            if(capacity == size){return false;} // this method checks if a number can be inserted in the array
+            if(capacity < size){size = capacity; return false;}
+            else{return true;}
+        }
+        
+        public int getCapacity(){return capacity;}
+        public int getSize(){return size;}
+        
+        public String toString(){
+        String s = "";
+        for(int i = 0; i< list.length - 1;i++){if(list[i]==null){}else{s = s+list[i]+",";}} // the if-else block is present to ignore the nulls
+        
+        if(list[size-1]==null){}else{s = s+list[size-1];}
+        return s;
+        }
+
+        
+        public static Object resizeArray (Object previous, int new_s) { // the idea for this code was found on https://www.tutorialspoint.com/how-to-resize-an-array-in-java
+            int past_s;  // it is used to change the size of the array
+            past_s = java.lang.reflect.Array.getLength(previous); //this line returns length of old array
+            Class elementType; 
+            elementType = previous.getClass().getComponentType(); // this line determines what type of object it is
+            Object fixed_array;
+            fixed_array = java.lang.reflect.Array.newInstance(elementType, new_s); // this line creates a new instaces of an array with the new size
+            int keep_s = Math.min(past_s, new_s);
+               if (keep_s > 0) //if the new size is bigger the old array is copied into the new array
+                  System.arraycopy(previous, 0, fixed_array, 0, keep_s);
+            return fixed_array;
+      }
+        
+    }

@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1568574568 source:c:\users\sawoud\desktop\question_2\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1568760748 source:d:\lab 1\question_2 work\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

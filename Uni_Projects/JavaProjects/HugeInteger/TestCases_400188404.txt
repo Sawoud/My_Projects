@@ -1,0 +1,17 @@
+public class Test {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws IllegalArgumentException {
+        HugeInteger x = new HugeInteger("000000000001");
+        System.out.println(x.toString());
+        HugeInteger y = new HugeInteger("68868685695869757567587658765876857658565656757");
+        System.out.println(y.toString());
+        HugeInteger z = new HugeInteger(0); // the test cases were changed as I went
+        //System.out.println(z.toString());
+        System.out.println(x.add(y).toString());
+
+    }
+    
+}

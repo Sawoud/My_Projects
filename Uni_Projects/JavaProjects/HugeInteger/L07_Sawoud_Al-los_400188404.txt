@@ -1,0 +1,654 @@
+public class HugeInteger {
+    int [] num;
+
+    
+    
+    public HugeInteger(String val) throws IllegalArgumentException  // this constructor takes the string and puts it in an array
+    {
+        int s = 0;
+        if (val == ""){System.out.println("Invalid Input !!!");}
+        else{
+            while(val.charAt(s) == '0')
+            {
+                s++;
+                if (s == val.length()){break;}
+            }
+            if(s == val.length())
+            {
+                num = new int[1];
+                num[0] = 0;
+            }
+
+            else if (val.charAt(0) == '-') // this if statment checks to see if the number is negative to know how many spaces to allocate
+        {
+        num = new int [val.length()];
+        num [0] = -1;// a negative 1 is put to identify that the number is negative
+            for(int i = 1; i < val.length(); i++) // this loop takes each number and puts it in the array after converting each char into an int
+            {
+         if (val.charAt(i) < '0' &&val.charAt(i)  > '9') // this if checks if the value of the charchter is not between 0 and 9
+        {System.out.println("Invalid Input !!!"); break;}
+                num[i] = (int)(val.charAt(i) - '0');
+            }
+        }
+        else{
+        num = new int [val.length()];
+        for(int i = 0; i < val.length(); i++) // this loop takes each number again and puts it in the array after converting each char into an int
+        {
+        if (val.charAt(i) < '0' &&val.charAt(i)  > '9') // this if again checks if the value of the charchter is not between 0 and 9
+        {System.out.println("Invalid Input !!!"); break;}
+                num[i] = (int)(val.charAt(i) - '0');
+        }
+                
+  
+    }
+        
+        int x = 0; //this section is present to remove any leading 0's
+        int temp = 0;   
+        if(val == ""){}
+        else if(num.length == 1 && num[0] == 0){}
+        else if(num[0] != -1){
+        while(num[x] == 0)
+        {
+            x++;
+        }
+        int [] n_p = new int[num.length - x]; // the size of the n_p array is = size of orginal array - 0's
+        for(int i = x; i < num.length; i++) // the contents of the array that are past the 0's get put into the n_p array
+        {
+            n_p[i-x] = num[i];
+        }
+        num = (int[])resizeArray(num,num.length - x); // num array gets resized to size without 0's
+        for(int i = 0; i < num.length; i++) // contents get transferd back into orginal array
+        {
+             num[i] = n_p[i];
+        }
+        }
+        
+        
+        else{ // this sections does the same exact operation but it just adds a 1 to x to ignore the -1 
+        x++;
+        while(num[x] == 0)
+        {
+            x++;
+        }
+        int [] n_p = new int[num.length - x];
+        for(int i = x; i < num.length; i++)
+        {
+            n_p[i-x] = num[i];
+        }
+        num = (int[])resizeArray(num,num.length - x + 1); //the +1 here is present to compinsate for the existance of the -1
+        num[0] = -1; // of course the -1 gets inputted back first
+        for(int i = 1; i < num.length; i++)
+        {
+             num[i] = n_p[i-1];
+        }
+        }
+        }
+}
+    
+    
+    
+        public HugeInteger(int n) throws IllegalArgumentException // this constructor creates a random huge number
+    {
+        num = null;
+
+            if (n <= 0) // if the input is less than or equal to 0 then an exception is thrown
+            {
+                System.out.println("NULL");
+            }
+            else{
+        num = new int[n];
+        num[0] =0;
+        while(num[0] == 0) // this loop ensure that the first value is not 0
+        {
+            num[0] = (int)(Math.random()*10);
+        }
+        for(int i = 1; i < n; i++)//this loop goes through and fills it with values
+        {
+            num[i] = (int)(Math.random()*10);
+        }
+            }
+    }
+
+        
+        
+    public HugeInteger (int n,String s) // this constructs an empty array of size n
+    {
+        num = new int[n];
+    }
+    
+    
+        public HugeInteger (int[] n)
+    {
+        num = new int[n.length];    
+        for(int i = 0; i < n.length; i++)
+        {
+            num[i] = n[i];
+        }
+    }
+    
+    
+    public HugeInteger add(HugeInteger h) // this method is to add the intgers
+    {
+        int carry = 0;
+        int max = 0;
+        int [] zeros;
+        HugeInteger sum = null;
+        int [] max_a;
+        
+        
+        if (this.num.length > h.num.length){ // if this is larger than h
+        max = this.num.length;
+        max_a = new int [max];
+        sum = new HugeInteger(max+1,"temp"); // a new array called sum is created that is 1 unit larger than the largest array incase the carry carries over to the last digit
+        
+        zeros = new int [max]; // This section makes both the smaller number and the larger number of the same length so that they are esier to work with
+        for (int i = h.num.length-1; i >=0; i--) // the zeros array is for the smaller number and gets the number in h inputted in it
+        {// at the right
+            zeros [i + (this.num.length - h.num.length)] = h.num[i];
+        }
+        for (int i = (max - h.num.length)-1; i >=0; i--)
+        { // the rest of it is just filled with zeros
+            zeros[i] = 0;
+        }
+        for (int i = 0; i < max; i++)
+        {
+            max_a[i] = this.num[i]; // max_a gets the content of the bigger in size number 
+        }
+    }
+    else
+    { // this section does the same exact thing as the if statment nut it just switches if and this
+        max = h.num.length;
+        max_a = new int [max];
+        sum = new HugeInteger(max+1,"temp");
+        
+        zeros = new int [max];
+        for (int i = this.num.length - 1; i >=0; i--)
+        {
+            zeros [i + (h.num.length - this.num.length)] = this.num[i];
+        }
+        for (int i = (max - this.num.length) - 1; i >=0; i--)
+        {
+            zeros[i] = 0;
+        }
+                for (int i = 0; i < max; i++)
+        {
+            max_a[i] = h.num[i];
+        }
+
+    }
+        
+
+        
+
+    if((noneexist(max_a) == false) &&  (noneexist(zeros) == false)){ //this if ensure that neither of the inputs are negative
+
+   
+    // this section performs the actual addtion
+        for (int i = max - 1 ; i >= 0; i--)
+        { 
+            if (carry == 1) // if a carry exists then the program checks to see if anthor carry exists
+            {// if not it just adds the numbers
+                if (((max_a[i] + zeros[i] + 1)>= 10))
+                {
+                    sum.num[i + 1] = (max_a[i] + zeros[i] + 1)%10;
+                    carry = 1;
+                    continue;
+
+                }
+                else
+                {
+                    sum.num[i + 1] = (max_a[i] + zeros[i] + 1);
+                    carry = 0;
+                    continue;
+                }
+            }
+            if (((max_a[i] + zeros[i])>= 10)) // if the numbers add up to more than 10 then the units portion is put in the array and the carry is set to 1
+            {
+                carry = 1; 
+                sum.num[i + 1] = (max_a[i] + zeros[i])%10;
+                continue;
+            }
+            else{// otherwise the numbers are just added 
+            sum.num[i + 1] = max_a[i] + zeros[i];
+            continue;
+            }
+        }
+        if (carry == 1) // this if statment is present incase after the loop is done the carry is still equal to 1
+        {
+            sum.num[0] = 1;
+        }
+        
+        
+        }
+    
+    
+    if((noneexist(max_a) == false) &&  (noneexist(zeros) == true)){ //this if checks to see if the smaller array is negative
+    
+
+        zeros = remove_1(zeros); // this function takes of any negative 1's
+    HugeInteger max_a_h = new HugeInteger(max_a);
+    HugeInteger zeros_h = new HugeInteger(zeros);
+    max_a_h.num = remove0(max_a_h);
+    zeros_h.num = remove0(zeros_h);
+    sum = max_a_h.subtract(zeros_h);  // the new numbers are sent to substract  since that is what is happineng  
+        }
+
+    if((noneexist(max_a) == true) &&  (noneexist(zeros) == false)){ //this if checks to see if the smaller array is negative
+
+
+        max_a = remove_1(zeros);
+    HugeInteger max_a_h = new HugeInteger(max_a);
+    HugeInteger zeros_h = new HugeInteger(zeros);
+    max_a_h.num = remove0(max_a_h); // these two lines remove the front 0's from the arrays
+    zeros_h.num = remove0(zeros_h);
+    sum = max_a_h.subtract(zeros_h);   
+    sum.num[0]  = -1;// if the larger number is substracting the smaller number then the result must be negative
+    }
+    
+        
+    if((noneexist(max_a) == true) &&  (noneexist(zeros) == true)){ //this if both inputs are negative
+        max_a = remove_1(max_a); // if they are it sends them back to add since that is basically what is happpinent
+        zeros = remove_1(zeros); // but it adds a negative in the front
+    HugeInteger max_a_h = new HugeInteger(max_a);
+    HugeInteger zeros_h = new HugeInteger(zeros);
+    sum = max_a_h.add(zeros_h); //the two numbers get sent to add again but without the -1
+    sum.num[0] *= -1;
+    }
+    
+        sum.num = remove0(sum); // the array gets sent to remove so that the zeros can be striptted
+        return sum;
+ 
+        }
+
+    
+    
+    public HugeInteger subtract (HugeInteger h) // this function finds the diffrence between two numbers
+    {
+        HugeInteger diff = null;
+        int[]  big = null; // this array gets the value of the larger in size input
+        int[]  small = null; // while this array gets the smaller in size input
+        int max = 0;
+
+        
+        if(h.num.length > this.num.length) //this if statment follows the same idea introduced in add
+        {
+        max = h.num.length;
+        big = new int [max];
+        diff = new HugeInteger(max+1,"temp");
+        
+        small = new int [max];
+        for (int i = this.num.length - 1; i >=0; i--)
+        {
+            small [i + (h.num.length - this.num.length)] = this.num[i];
+        }
+        for (int i = (max - this.num.length) - 1; i >=0; i--)
+        {
+            small[i] = 0;
+        }
+                for (int i = 0; i < max; i++)
+        {
+            big[i] = h.num[i];
+        } 
+    }
+        
+        if(h.num.length < this.num.length)
+        { // again this loop follows the same idea
+        max = this.num.length;
+        big = new int [max];
+        diff = new HugeInteger(max+1,"temp");
+        
+        small = new int [max];
+        for (int i = h.num.length - 1; i >=0; i--)
+        {
+            small [i + (this.num.length - h.num.length)] = h.num[i];
+        }
+        for (int i = (max - h.num.length) - 1; i >=0; i--)
+        {
+            small[i] = 0;
+        }
+                for (int i = 0; i < max; i++)
+        {
+            big[i] = this.num[i];
+        }
+
+    }
+
+        
+        
+        else if (h.num.length == this.num.length) // this block checks to see which number is bigger if both posses the same size
+        {
+        boolean this_is_bigger = false; // it assumes that this is smaller
+        int i = -1;
+        do // then it goes through the do while loop where it checks each element to see which one is bigger then it breaks out the loop
+        {
+            i++;
+            if(h.num[i] < this.num[i])
+            {
+                this_is_bigger = true;
+                break;
+            }
+            else if(h.num[i] > this.num[i])
+            {
+                this_is_bigger = false;
+                break;
+            }
+            else if(i == this.num.length - 1){break;}
+        }while(h.num[i] == this.num[i]); 
+        if(this_is_bigger == true) // then again it puts the bigger number in big and the smaller number in small
+        {
+            max = this.num.length;
+            big = new int [max];
+            small = new int [max];
+            diff = new HugeInteger(max+1,"temp");
+            for (int j = 0; j < max; j++)
+            {
+                big[i] = this.num[i];
+                small[i] = h.num[i];
+            }
+        }
+        
+        if(this_is_bigger != true)
+        {
+            max = this.num.length;
+            big = new int [max];
+            small = new int [max];
+            diff = new HugeInteger(max+1,"temp");
+            for (int j = 0; j < max; j++)
+            {
+                big[i] = h.num[i];
+                small[i] = this.num[i];
+            }
+        }
+        }
+        
+        if(noneexist(big) == false && noneexist(small) == false){ // this statments checks to see if the inputs are both postive
+        
+        for(int i = max-1; i>= 0; i--)
+        {
+            if(big[i] - small[i] < 0) // if the substraction of the two numbers produces a negative
+            {// the number we are at gets increased by 10, and the number after it gets substracted by 1
+                big[i] += 10;
+                big[i-1]--;
+                diff.num[i+1] = big[i] - small[i];
+            }
+            else // otherwise the numbers just get substracted
+            {
+               diff.num[i+1] = big[i] - small[i];
+            }
+        }
+        }
+                if(noneexist(big) == false && noneexist(small) == true) // this if checks to see if the smaller number is negative 
+                {
+                    small = remove_1(small); // this line remove the negative 1
+                    HugeInteger big_h = new HugeInteger(big);
+                    HugeInteger small_h = new HugeInteger(small);
+                    diff = big_h.add(small_h); // it gets sent to add since a "-"*'-' = addtion
+                }
+                      
+                if(noneexist(big) == true && noneexist(small) == false)// this if checks to see if the larger number is negative 
+                {
+                    big = remove_1(big);
+                    HugeInteger big_h = new HugeInteger(big);
+                    HugeInteger small_h = new HugeInteger(small);
+                    diff = big_h.add(small_h); // it again gets sent to add since that is equvliently what the diffrence is
+                }
+
+                if(noneexist(big) == true && noneexist(small) == true) // if both numbers are negative
+                {
+                    big = remove_1(big);
+                    small = remove_1(small);
+                    HugeInteger big_h = new HugeInteger(big);
+                    HugeInteger small_h = new HugeInteger(small);
+                    diff = big_h.subtract(small_h); //it gets sent to subtract casue the diffrence is a magnatiude and it becomes the same as addtion
+                }
+                diff.num = remove0(diff);
+                return diff;
+    }
+        public int  compare (HugeInteger h)
+        {
+            int test = 0;
+            HugeInteger this_h = new HugeInteger(this.num); 
+            HugeInteger h_h = new HugeInteger(h.num);
+            this_h.num = remove_1(this_h.num);// these 4 lines ensure any unnessary features are removed 
+            this_h.num = remove0(this_h);
+            h_h.num = remove_1(h_h.num);
+            h_h.num = remove0(h_h);
+            if(h_h.num.length > this_h.num.length){test = -1;} // this statment checks to see if the size of h is bigger than this
+            else if(h_h.num.length < this_h.num.length){test = 1;}// this statment checks to see if the size of this is bigger than h
+            else{ // if both of them have the same size, then this loop checks each element to see which one is greater
+            for(int i = 0; i<h_h.num.length; i++)
+            {
+                if(h_h.num[i] > this_h.num[i]){test = -1;break;}
+                else if(h_h.num[i] < this_h.num[i]){test = 1;break;}
+                test = 0;
+            }
+            }
+            return test;
+        }
+    
+    
+    
+        public HugeInteger multiply (HugeInteger h)
+        {
+    String[] S_1  =new String[this.num.length + h.num.length +5];
+    String[] S_2  =new String[this.num.length + h.num.length];
+    int counter=0; 
+    int digits = 0;
+    int carry = 0;
+    int times = 1;
+    int remainder = 0;
+    int sum = 0;
+    String number_s = "";
+    
+    for(int i=h.num.length-1;i>=0;i--) // this nested loop multiplies the two number by each other
+    {
+        for(int j=this.num.length-1;j>=0;j--)
+        {
+            int this_n = this.num[j];
+            int h_n = h.num[i];
+            times = (this_n*h_n)+carry; // the two numbers get multiplied and any carry that exists gets added on
+            remainder = times%10;  // the actual number is stored in remainder variable
+            carry = times/10; // and the carry ofcourse gets stored in carry
+            
+            if(j > 0){number_s = remainder + number_s;} // if the loop is not at the last digit only the remainder gets added to the number string
+            else {number_s = times + number_s;} // if its the last digit the entire number gets added to the string
+        }
+        S_1[digits] = number_s; // the result gets added to the numbers array
+        digits++; //each time the loop is went through the number of digits gets incremented
+        number_s = "";
+        carry = 0;
+    }
+
+    for(int i=0; i<digits; i++)
+    {
+        number_s = "";
+        for(int length_1 = digits-i; length_1 >0; length_1 --) {number_s = "0" + number_s;} // to have get all the strings to have the same size this loop adds zeros to the front
+        number_s = number_s + S_1[i]; // then it adds the number itself
+        for(int length_1 =0; length_1 <=i-1; length_1 ++){number_s = number_s + "0";}//this loop adds whatever is the number of zeros needed at the end of the loop
+        S_2[counter]=number_s; // then it adds the number to the second string array
+        counter++;
+    }
+    
+    HugeInteger result = new HugeInteger ((h.num.length + this.num.length),"temp"); // and empty hugeinteger is created
+    for(int i = 0; i< counter;i++)
+    {
+        HugeInteger temp = new HugeInteger(S_2[i]); 
+        result = result.add(temp); // this statment behaves the same as this: 
+                                    //  result = result + S_2[i];
+    }
+   
+        result.num = remove0(result);
+        return result;
+
+        }
+    
+    
+    
+    
+        
+        public int[] remove_1 (int[] n)
+    { // this method does turns a -1 into a zero
+            for(int i = 0; i < n.length; i++)
+    {
+        if(n[i] == -1){n[i] = 0; break;}
+    }
+        return n;
+    }
+    
+    
+            public boolean noneexist (int[] n)
+    { // this method checks to see if a negative 1 exists
+        boolean one = false;
+    for(int i = 0; i < n.length; i++)
+    {
+        if(n[i] == -1){one = true; break;}
+    }
+        return one;
+    }
+    
+    
+        
+        
+        
+        public String toString()
+    {
+        String s = "";
+        for (int i = 0; i< num.length; i++)
+        {
+            if (num[i] == -1) // if the number is negative a - is put in the first postion
+            {
+                s += '-';
+            }
+            else{ // otherwise the integer gets added to the string
+            s += Integer.toString(num[i]);
+            }
+            }
+        return s;
+    }
+        
+       
+
+        
+    
+    
+        public int[] remove0 (HugeInteger n)
+    { // this method does exactly the same function as the remove 0 region in the first constrcutor but this one in generlized to any huge integer
+ int x = 0;
+        int temp = 0;        
+        while(n.num[x] == 0)
+        {
+            x++;
+        }
+        int [] n_p = new int[n.num.length - x];
+        for(int i = x; i < n.num.length; i++)
+        {
+            n_p[i-x] = n.num[i];
+        }
+        n.num = (int[])resizeArray(n.num,n.num.length - x);
+        return n_p;
+    }
+    
+    
+    
+    
+    
+    private static Object resizeArray (Object previous, int new_s) { // the idea for this code was found on https://www.tutorialspoint.com/how-to-resize-an-array-in-java
+            int past_s;  // it is used to change the size of the array
+            past_s = java.lang.reflect.Array.getLength(previous); //this line returns length of old array
+            Class elementType; 
+            elementType = previous.getClass().getComponentType(); // this line determines what type of object it is
+            Object fixed_array;
+            fixed_array = java.lang.reflect.Array.newInstance(elementType, new_s); // this line creates a new instaces of an array with the new size
+            int keep_s = Math.min(past_s, new_s);
+               if (keep_s > 0) //if the new size is bigger the old array is copied into the new array
+                  System.arraycopy(previous, 0, fixed_array, 0, keep_s);
+            return fixed_array;
+      }
+        
+}
+
+
+
+
+
+
+public class Test {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws IllegalArgumentException {
+        
+        
+        HugeInteger a = new HugeInteger("0"); // Exception and Edge cases
+        System.out.println(a.toString());       
+        HugeInteger b = new HugeInteger("0000000");
+        System.out.println(b.toString());       
+        HugeInteger c = new HugeInteger("00000000000000000123456789123456789123456789123456789123456789123456789");
+        System.out.println(c.toString());       
+        HugeInteger d = new HugeInteger("-00000000000000000123456789123456789123456789123456789123456789123456789");
+        System.out.println(d.toString());          
+        HugeInteger e = new HugeInteger("546df548576857965878967985679895");
+        HugeInteger f = new HugeInteger("-546df548576857965878967985679895");
+        HugeInteger g = new HugeInteger(0);
+        HugeInteger h = new HugeInteger(144);
+        System.out.println(h.toString());          
+        HugeInteger i = new HugeInteger(-2);
+
+        HugeInteger j = new HugeInteger("548784"); //add function tests
+        HugeInteger k = new HugeInteger("548784"); 
+        System.out.println(j.add(k).toString());
+        
+        HugeInteger l = new HugeInteger("548784"); 
+        HugeInteger m = new HugeInteger("-8784"); 
+        System.out.println(l.add(m).toString());
+        
+        HugeInteger p = new HugeInteger("-4888888"); 
+        HugeInteger q = new HugeInteger("-50000"); 
+        System.out.println(p.add(q).toString());
+
+        
+        HugeInteger aa = new HugeInteger("45756"); //subtract function tests
+        HugeInteger ab = new HugeInteger("5756"); 
+        System.out.println(aa.subtract(ab).toString());
+        
+        HugeInteger ac = new HugeInteger("4750000"); 
+        HugeInteger ad = new HugeInteger("-50000"); 
+        System.out.println(ac.subtract(ad).toString());
+       
+        HugeInteger af = new HugeInteger("-2250"); 
+        HugeInteger ag = new HugeInteger("-250"); 
+        System.out.println(af.subtract(ag).toString());
+
+
+        HugeInteger ba = new HugeInteger("257"); //multplication function tests
+        HugeInteger bb = new HugeInteger("244"); 
+        System.out.println(ba.multiply(bb).toString());
+        
+        HugeInteger bc = new HugeInteger("586547689457964"); 
+        HugeInteger bd = new HugeInteger("654867947589654865496749"); 
+        System.out.println(bc.multiply(bd).toString());
+
+        HugeInteger be = new HugeInteger("586547769854795476544546549159151955451994547985489689457964"); 
+        HugeInteger bf = new HugeInteger("6548679475896548654967487784541321154887789"); 
+        System.out.println(be.multiply(bf).toString());
+        
+        
+        HugeInteger ca = new HugeInteger("257"); //Compare function tests
+        HugeInteger cb = new HugeInteger("244"); 
+        System.out.println(ca.compare(cb));
+        
+        HugeInteger cc = new HugeInteger("586547689457964"); 
+        HugeInteger cd = new HugeInteger("654867947589654865496749"); 
+        System.out.println(cc.compare(cd));
+
+        HugeInteger ce = new HugeInteger("-865477698547954955451994547985489689457964"); 
+        HugeInteger cf = new HugeInteger("6548679475896548654967487784541321154887789"); 
+        System.out.println(ce.compare(cf));
+        HugeInteger cg = new HugeInteger("-865477698547954955451994547985489689457964"); 
+        HugeInteger ch = new HugeInteger("6548679475896548654967487784541321154887789"); 
+        System.out.println(ce.compare(cf));
+    }
+    
+}
+

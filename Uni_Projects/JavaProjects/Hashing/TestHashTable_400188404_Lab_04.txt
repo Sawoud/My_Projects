@@ -1,0 +1,166 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.mycompany.lab2_4;
+import java.util.Random;
+
+/**
+ *
+ * @author Sawoud
+ */
+public class TestHashTable {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+//       System.out.println("First Test");
+//       HashTableLin x =  new HashTableLin(6, 1);
+//       x.insert(51);
+//       x.insert(44);
+//       x.insert(37);
+//       x.printKeysAndIndexes();
+//       x.insert(30);
+//       x.insert(23);
+//       x.insert(9);
+//       x.printKeysAndIndexes();
+//       x.insert(9);
+//       x.insert(44);
+//       x.insert(242);
+//       x.printKeysAndIndexes();
+//       x.insert(342);
+//       x.printKeysAndIndexes();
+//       System.out.println(x.isIn(342));
+//       
+//       
+//       System.out.println("Second Test");
+//       HashTableLin a =  new HashTableLin(3, .1);
+//       a.printKeysAndIndexes();
+//       a.insert(51);
+//       a.printKeysAndIndexes();
+//       a.insert(44);
+//       a.insert(37);
+//       a.printKeysAndIndexes();
+//       a.insert(30);
+//       a.insert(23);
+//       a.insert(9);
+//       a.printKeysAndIndexes();
+//       a.insert(9);
+//       a.insert(44);
+//       a.insert(242);
+//       a.printKeysAndIndexes();
+//       a.insert(342);
+//       a.printKeysAndIndexes();
+//       System.out.println("***************************************");
+//       
+//       
+//       
+       System.out.println("Third Test");
+       HashTableQuad y =  new HashTableQuad(6, .5);
+       y.insert(51);y.insert(44);y.insert(37);y.insert(30);y.insert(13);y.insert(12);
+       y.insert(103);y.insert(103);
+       y.printKeysAndIndexes();
+              System.out.println("***************************************");
+//
+//       System.out.println("Fourth Test");
+//       y =  new HashTableQuad(6, 1);
+//       y.insert(51);y.insert(44);y.insert(37);y.insert(30);y.insert(13);y.insert(12);
+//       y.insert(103);y.insert(103);
+//       y.printKeysAndIndexes();
+//              System.out.println("***************************************");
+   
+//       System.out.println("First Test");
+//       HashTableLin x =  new HashTableLin(6, .5);
+//       x.insert(51);
+//       x.insert(44);
+//       x.insert(37);  
+//       System.out.println(x.getALoad());
+//       
+//       x.printKeysAndIndexes();
+//        x.callrehash(); 
+//        System.out.println(x.getALoad());
+//       x.callrehash();
+//        System.out.println(x.getALoad());
+//         probes();
+//       x.insert(30);
+//       x.insert(23);
+//       x.insert(9);
+//       x.printKeysAndIndexes();
+//       x.insert(9);
+//       x.insert(44);
+//       x.insert(242);
+//       x.printKeysAndIndexes();
+//       x.insert(342);
+//       x.printKeysAndIndexes();
+       System.out.println("***************************************");
+       probes();
+    
+    } 
+ public static void probes()
+ {
+    int number_entries = 1000;
+    double load = 0; 
+    double [] avarage = new double[10];
+    double [] results = new double [100];
+// in the quadratic probing section it is explained how this function works
+    System.out.println("\n\n\n\t\tLinear Hashing");
+    System.out.println("Load \t probes");
+
+   for(int v = 0; v<10;v++){
+       load += .1;
+       
+    for(int i = 0; i < 100; i++){
+
+        HashTableLin x =  new HashTableLin(number_entries, load);
+     
+            for(int j = 0; j < number_entries;j++){
+                Random randomGenerator = new Random();
+                int random = randomGenerator.nextInt(number_entries) + 1;
+                x.insert((int)(random));
+
+             }
+
+        int value = x.insert(1906586735);
+        results[i] = value;
+    }
+    for(int z = 0; z<100;z++){avarage[v] += results[z];}
+    avarage[v] = avarage[v]/100;
+   System.out.println(load+"\t"+avarage[v]);
+   }
+   
+   
+   
+    System.out.println("\n\n\n\t\tQuadratic Hashing");
+    System.out.println("\nLoad \t probes");
+   
+   
+    number_entries = 1000;
+    load = 0; 
+    avarage = new double[10];
+    results = new double [100];
+   for(int v = 0; v<10;v++){//this loop goes 10 times to increase the value of load up to 1
+       load += .1;
+       
+    for(int i = 0; i < 100; i++){ // this line does the simulation 100 times
+
+        HashTableQuad x =  new HashTableQuad(number_entries, load);
+     
+            for(int j = 0; j < number_entries;j++){ // all the elements requaired get inserted
+                Random randomGenerator = new Random();
+                int random = randomGenerator.nextInt(number_entries) + 1;
+                x.insert((int)(random));
+
+             }
+
+        int value = x.insert(1906586735); // this is a special value that the test is done upon, it is used as a control
+        results[i] = value;
+    }
+    for(int z = 0; z<100;z++){avarage[v] += results[z];}// this ;ine adds all the probe results
+    avarage[v] = avarage[v]/100;
+   System.out.println(load+"\t"+avarage[v]); // this line calculates the avarage
+   }
+ }
+ }

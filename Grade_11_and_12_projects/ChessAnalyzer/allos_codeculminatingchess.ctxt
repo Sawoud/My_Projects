@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=allos_codeculminatingchess
+comment1.params=args
+comment1.target=void\ main(java.lang.String[])
+comment2.params=chessboard1
+comment2.target=int\ white(char[][])
+comment3.params=chessboard2
+comment3.target=int\ black(char[][])
+numComments=4

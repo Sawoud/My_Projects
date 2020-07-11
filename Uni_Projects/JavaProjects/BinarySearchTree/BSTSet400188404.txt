@@ -1,0 +1,309 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mycompany.lab_2;
+import java.util.Stack; 
+
+/**
+ *
+ * @author Sawoud
+ */
+public class BSTSet {
+private TNode root;  
+
+ 
+ public BSTSet(){root = null;} // this constructors declares the root as null
+ 
+
+
+ 
+ public BSTSet(int[] input) // this constructor converts an array into a binary tree
+{
+    for(int i = 0; i < input.length; i++){ // this loop ensures each digit is put into the tree
+        root = RecurstionAdd(root,input[i]);
+    }
+}
+  public TNode RecurstionAdd(TNode temp, int value) { // this is a recursive method that adds elements to the tree
+    
+     if (temp == null) {
+        return new TNode(value,null,null);// when the node is a leaf, the value with two nulls is returned
+    }
+     
+     if (value < temp.element) { // if the value is smaller than the current element, it again calls the same function but it passes the left node
+        temp.left = RecurstionAdd(temp.left, value);
+    } else if (value > temp.element) {// if the value is larger than the current element, it again calls the same function but it passes the right node
+        temp.right = RecurstionAdd(temp.right, value);
+    } else {// otherwise the same node is returned if the values are equal
+        temp = temp;
+    }
+ 
+    return temp;
+}
+ public boolean isIn(int v)
+ { // this method non-recusivly traverses through the tree to find the required value
+    boolean check = false;
+    TNode temp = root;
+    
+    while(true){
+    if((temp != null)&&(v > temp.element))  // if the condtion is satisfied, the pointer goes right
+    {
+        temp = temp.right;
+    }
+    
+    if((temp != null)&&(v < temp.element))// if the condtion is satisfied, the pointer goes left
+    {
+        temp = temp.left;
+    }
+    if ((temp != null)&&(temp.element == v)){check = true; break;} // if the node is found, the loop is broken out off
+    if (temp == null){break;} // if somehow the end node is reached, the program breaks
+    
+    }
+    return check; // the boolean value is returned
+ }
+ 
+ 
+ public void add(int v){
+ if (isIn(v) == true){} //if the value is already in the tree, nothing is done
+ else{root = RecurstionAdd(root,v);}   // this add function again uses the recursive add to input the value is the proper location
+ }
+
+  
+ public boolean remove (int v){
+     boolean check = false; // it is assumed that no values get removed
+    if (isIn(v) == false){} // if the value is not in the tree nothing happens
+    else // otherwise it gets recurivly removed
+    {
+    check  = true;
+    root = RECremove(root, v); 
+        
+    }
+    return check;
+ }
+ 
+  
+    TNode RECremove(TNode root, int value) 
+    {
+        
+        if (root == null){return root;}  // if the tree is empty, nothing is changed
+        else{
+        if (value < root.element) // if the condtion is satisfied, the left node is sent 
+        {root.left = RECremove(root.left, value);}
+        else if (value > root.element) // if the condtion is satisfied, the right node is sent 
+        {root.right = RECremove(root.right, value);}
+        
+        else // if the value is found
+        { 
+            if (root.left == null) {return root.right;} // if the node only has one or no chlidren
+            else if (root.right == null) {return root.left;}
+  
+            root.element = Max(root.left); // this function finds the maximum value in the left node and returns is
+  
+            // Delete the inorder successor 
+            root.right = RECremove(root.right, root.element); 
+        } 
+        }
+        return root; 
+    } 
+     int Max(TNode root) // this function finds the maximum value in the left tree
+    { 
+        int max = root.element; 
+        while (root.right != null) 
+        { 
+            max = root.right.element; // these line keeps travesring the tree to find the largest value 
+            root = root.right; 
+        } 
+        return max; 
+    } 
+ 
+
+ 
+  public BSTSet union(BSTSet s)
+ {
+     int num;
+     BSTSet united = new BSTSet();
+    
+        united = RECunited(root, s.root,this); // the roots are sent to recursive union
+        // result is set to have the same elements as this, while Not Changing this
+    return united;
+ }
+
+ public BSTSet RECunited(TNode temp1, TNode temp2,BSTSet result)
+    {
+        if(temp2 != null){  // each element of s is checked against this tree, so s is traversed
+        RECunited(temp1,temp2.left,result); // united is traversed left and right
+        result.add(temp2.element); // each element is added with the result tree
+        RECunited(temp1,temp2.right,result);
+        result.add(temp2.element);
+        }
+        return result;
+       
+    }
+
+    
+ public BSTSet intersection(BSTSet s)
+ {
+     BSTSet inter = new BSTSet();
+     TNode temp = root;
+    if((s.root == null) || (root == null)){System.out.println("An Empty Tree Has Been Passed");}// if either tree is empty, no intersection exists
+    else{
+
+        inter = RECinter(root, s.root, new BSTSet()); // otherwise it is sent to recursive intersection
+}
+
+    return inter;
+    }
+ 
+    public BSTSet RECinter(TNode temp1, TNode temp2,BSTSet result)
+    { // the same idea that was presented with add is implemented here
+        // but IsIn is present to check if the value is actually present in this tree
+        // then it is added to result
+        if(temp2 != null){  
+        RECinter(temp1,temp2.left,result);
+        if(isIn(temp2.element) == true)
+            {
+        result.add(temp2.element);
+            }
+        RECinter(temp1,temp2.right,result);
+        if(isIn(temp2.element) == true)
+            {
+        result.add(temp2.element);
+            }
+        }
+        return result;
+       
+    }
+
+    
+    
+        
+ public BSTSet difference(BSTSet s)
+ {
+     BSTSet diff = new BSTSet();
+     TNode temp = root;
+    if((s.root == null) || (root == null)){System.out.println("An Empty Tree Has Been Passed");}
+    // again if the tree is empty, no intersection exists
+    else{
+
+        diff = RECdiff(root, s.root, this); // again the values are sent to recursive diffrence
+}
+    return diff;
+ }
+
+    
+        public BSTSet RECdiff(TNode temp1, TNode temp2,BSTSet result)
+    {// again the same idea is used in this function but this time 
+        //isIn checks if the value is NOT in this tree
+        if(temp2 != null){  
+        RECinter(temp1,temp2.left,result);
+        if(isIn(temp2.element) != true)
+            {
+        result.add(temp2.element);
+            }
+        RECinter(temp1,temp2.right,result);
+        if(isIn(temp2.element) != true)
+            {
+        result.add(temp2.element);
+            }
+        }
+        return result;
+       
+    }
+
+    public int size()
+    {
+        int size = 0;
+        if(this == null){} // if the tree is empty, -1 is returned
+        else{
+            size = RECsize(root); // otherwise RECsize is called
+        }
+        return size;
+    }
+    
+    
+        public int RECsize(TNode temp)
+    {
+        int size = 0;
+        if(root == null){}
+        else{ // where ever a node exists, a +1 is added
+            if(temp != null){size = (RECsize(temp.left) + 1 + RECsize(temp.right));}
+        }
+        return size;
+    }
+    
+    
+    
+        public int height()
+    {
+        int size = -1;
+        if(this == null){}
+        else{ // again. height calls recursive height
+            size = RECheight(root);
+        }
+        return size;
+    }
+    
+        public int RECheight(TNode node)  
+    { 
+        int left = 0;
+        int right = 0;
+
+        if (node == null) 
+            return 0; 
+        else 
+        { // every time a link is found, a 1 is added to the total size
+            left = RECheight(node.left); 
+            right = RECheight(node.right); 
+
+            return 1 + Math.max(left, right); 
+        } 
+    } 
+    
+    
+    public void printNonRec()
+{
+    if (root == null){}
+    
+    Stack <TNode> non_rec = new Stack<TNode>(); // a stack will be used to store the elements
+    
+    TNode temp = root;
+    
+    while(temp != null || non_rec.size() > 0) // while the stack is not null or posses a size of -1
+    {
+        while(temp != null){
+        non_rec.push(temp);// keep pushing in the smaller items into it
+        temp = temp.left;
+        }
+        temp = non_rec.pop(); // pop each one and print it
+        
+        System.out.print(temp.element + " ");
+        temp = temp.right; // then go to the right sub-tree/tree
+    }
+}
+
+    
+    
+    
+public void printBSTSet(){
+if(root==null)
+    System.out.println("The set is empty");
+    else{
+        System.out.print("The set elements are: ");
+        printBSTSet(root);
+        System.out.print("\n");
+        }
+}
+private void printBSTSet(TNode t){
+    if(t!=null){
+        printBSTSet(t.left);
+        System.out.print(" " + t.element + ", ");
+        printBSTSet(t.right);
+    }
+}
+
+// CREDITS
+// some ideas used in this code were found from the geeksforgeeks.org website
+}
+
+

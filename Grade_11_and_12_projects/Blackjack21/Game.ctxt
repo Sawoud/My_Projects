@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.params=
+comment0.target=int\ Card1()
+comment0.text=\r\n\ This\ method\ gives\ the\ first\ card\ to\ the\ players\r\n
+comment1.params=
+comment1.target=int\ Card2()
+comment1.text=\r\n\ This\ method\ gives\ the\ second\ card\ to\ the\ players\r\n
+comment2.params=
+comment2.target=int\ Card3()
+comment2.text=\r\n\ This\ method\ gives\ the\ third\ card\ to\ the\ players\ if\ they\ request\ it\r\n
+comment3.params=
+comment3.target=int\ Tally()
+comment3.text=\r\n\ This\ method\ counts\ up\ the\ score,\ and\ if\ the\ players\ have\ an\ Ace\ the\ program\ determines\ if\ it\ should\ have\ a\ value\ of\ 1\ or\ 11\r\n
+comment4.params=
+comment4.target=boolean\ Check()
+comment4.text=\r\n\ This\ method\ checks\ if\ any\ of\ the\ players\ have\ over\ 21\r\n
+comment5.params=z
+comment5.target=void\ Name(java.lang.String)
+comment5.text=\r\n\ This\ method\ is\ for\ the\ names\ of\ the\ players\r\n
+comment6.params=
+comment6.target=void\ Repeat()
+comment6.text=\r\n\ This\ method\ is\ to\ rest\ all\ the\ variables\ when\ the\ user\ repeats\ the\ program\r\n
+numComments=7
