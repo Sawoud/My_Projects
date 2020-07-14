@@ -7,45 +7,52 @@ from tkinter import *
 max = 122
 sort = [5,2,32,12,42,1,65,55,34,22,43,3,13,76,122,54]
 
+######################## BUBBLESORT
 def bubblesort():
    swap = True
    drawBS(sort,-1,-1)
+   j = 1
    while swap:
        swap = False
-       for i in range(len(sort)-1):
+       for i in range(len(sort)-j):
            drawBS(sort,i,i+1)
-           pygame.display.update()
-           time.sleep(1)
            if (sort[i] > sort[i+1]):
-               DISPLAY.fill((24,65,171))
 
                temp = sort[i]
                sort[i] = sort[i+1]
                sort[i+1] = temp
-               DISPLAY.fill((24,65,171))
                drawBS(sort,i,i+1)
-               pygame.display.update()
-               time.sleep(1)
-               pygame.display.update()
-               DISPLAY.fill((24,65,171))
-               drawBS(sort,i,i+1)
-               pygame.display.update()
                swap = True
-       drawBS(sort,-1,-1)
+       j = j + 1
+   drawBS(sort,-1,-1)
 
 def drawBS(array,z,j):
+    DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width //len(array)
     print(Bwidth)
     for i in range(len(array)):
         Bheight  = (int)((array[i]/max)*height)
         if(i == z or i == j):
-            pygame.draw.rect(DISPLAY,(0,255,0),(x,480,Bwidth,-1*Bheight))
+            pygame.draw.rect(DISPLAY,(0,255,0),(x,height,Bwidth,-1*Bheight))
         else:
-            pygame.draw.rect(DISPLAY,(0,0,0),(x,480,Bwidth,-1*Bheight))
+            pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         #pygame.draw.rect(DISPLAY,(0,0,0),(71*1,200,100,50))
         print(x)
         x = x + Bwidth
+    pygame.display.update()
+    time.sleep(.25)
+#########################################################################
+
+#######################################################Merge Sort
+def MergeSort(array):
+
+    if(len(array) != 2):
+        pass
+
+#######################################################
+
+
 
 width = 640
 height = 480
@@ -59,7 +66,11 @@ while True:
             if event.type==pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-    bubblesort()
+    flag ="z"
+    if(flag == "z"):
+        bubblesort()
+        flag ="y"
+    #MergeSort(sort)
 
     pygame.display.update()
 # bubblesort()
