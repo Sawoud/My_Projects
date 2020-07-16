@@ -4,33 +4,33 @@ import win32api
 from tkinter import *
 
 # Sorting will be done from smallesst to largest
-max = 122
-sort = [5,2,32,12,42,1,65,55,34,22,43,3,13,76,122,54]
+max = 90
+sort = [5,2,32,12,42,1,65,55,34,22,43,3,13,76,max,54]
 
 ######################## BUBBLESORT
-def bubblesort():
+def bubblesort(array):
    swap = True
-   drawBS(sort,-1,-1)
+   drawBS(array,-1,-1)
    j = 1
    while swap:
        swap = False
        for i in range(len(sort)-j):
-           drawBS(sort,i,i+1)
-           if (sort[i] > sort[i+1]):
-
-               temp = sort[i]
-               sort[i] = sort[i+1]
-               sort[i+1] = temp
-               drawBS(sort,i,i+1)
+           drawBS(array,i,i+1)
+           if (array[i] > array[i+1]):
+               temp = array[i]
+               array[i] = array[i+1]
+               array[i+1] = temp
+               drawBS(array,i,i+1)
                swap = True
+       print(swap)
+
        j = j + 1
-   drawBS(sort,-1,-1)
+   drawBS(array,-1,-1)
 
 def drawBS(array,z,j):
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width //len(array)
-    print(Bwidth)
     for i in range(len(array)):
         Bheight  = (int)((array[i]/max)*height)
         if(i == z or i == j):
@@ -38,10 +38,9 @@ def drawBS(array,z,j):
         else:
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         #pygame.draw.rect(DISPLAY,(0,0,0),(71*1,200,100,50))
-        print(x)
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(.25)
+    time.sleep(0.2)
 #########################################################################
 
 #######################################################Merge Sort
@@ -59,6 +58,7 @@ height = 480
 DISPLAY =  pygame.display.set_mode((width, height))
 DISPLAY.fill((24,65,171))
 
+flag ="z"
 
 while True:
 
@@ -66,9 +66,8 @@ while True:
             if event.type==pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-    flag ="z"
     if(flag == "z"):
-        bubblesort()
+        bubblesort(sort)
         flag ="y"
     #MergeSort(sort)
 
