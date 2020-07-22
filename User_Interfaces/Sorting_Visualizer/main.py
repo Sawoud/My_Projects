@@ -16,7 +16,8 @@ DISPLAY2.fill((124,33,65))
 def Quit():
     sys.exit()
 ######################## BUBBLESORT
-def bubblesort(array):
+def BubbleSort(array,root):
+   root.destroy()
    swap = True
    drawBS(array,-1,-1)
    j = 1
@@ -52,6 +53,10 @@ def drawBS(array,z,j):
 #########################################################################
 
 #######################################################Merge Sort
+def N_MergeSort(array,root):
+    root.destroy()
+    MergeSort(array)
+
 def MergeSort(array):
     drawMS(array,1)
     print(array)
@@ -94,10 +99,14 @@ def drawMS(array,flag): # still wanna figure out how to draw this
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(.1)
 #######################################################
 
 ####################################################QuickSort
+def N_QuickSort(array, start, end,root):
+    root.destroy()
+    QuickSort(array, start, end)
+
 def QuickSort(array, start, end):
     print(array)
     if start >= end:
@@ -162,26 +171,23 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
 
 
 def main():
-    sort = [max,5,2,32,12,42,1,64,55,34,22,254,43,3,13,76,65,23,187,345,213,98,54]
-    print("not true")
-    while True:
-        print("dg")
-        root = Tk()
-        root.title("Sorting Visulizer")
-        text = Text(root,height = 1)
-        text.insert(INSERT,"Welocme To the Sorting Visulizer !")
-        text.insert(END, "")
-        text.tag_config(root, justify='center')
-        text.pack()
-        button_1 = Button(root,text="\t Option 1: Bubble Sort\t",command= lambda: bubblesort(sort))
-        button_1.pack()
-        button_2 = Button(root,text="\t Option 2: Merge Sort\t",command = lambda: MergeSort(sort))
-        button_2.pack()
-        button_3 = Button(root,text="\t Option 3: Quick Sort\t",command = lambda: QuickSort(sort,0,len(sort)-1))
-        button_3.pack()
-        button_4 = Button(text = '\tQUIT\t', command= Quit)
-        button_4.pack()
-
-        root.mainloop()
+        sort = [max,5,2,32,12,42,1,64,55,34,22,254,43,3,13,76,65,23,187,345,213,98,54]
+        while True:
+            root = Tk()
+            root.title("Sorting Visulizer")
+            text = Text(root,height = 1)
+            text.insert(INSERT,"Welocme To the Sorting Visulizer !")
+            text.insert(END, "")
+            text.tag_config(root, justify='center')
+            text.pack()
+            button_1 = Button(root,text="\t Option 1: Bubble Sort\t",command= lambda: BubbleSort(sort,root))
+            button_1.pack()
+            button_2 = Button(root,text="\t Option 2: Merge Sort\t",command = lambda: N_MergeSort(sort,root))
+            button_2.pack()
+            button_3 = Button(root,text="\t Option 3: Quick Sort\t",command = lambda: N_QuickSort(sort,0,len(sort)-1,root))
+            button_3.pack()
+            button_4 = Button(text = '\tQUIT\t', command= Quit)
+            button_4.pack()
+            root.mainloop()
 
 main()
