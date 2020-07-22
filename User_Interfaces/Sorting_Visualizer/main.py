@@ -37,6 +37,9 @@ def BubbleSort(array,root):
    drawBS(array,-1,-1)
 
 def drawBS(array,z,j):
+    for event in pygame.event.get():
+      if (event.type == pygame.QUIT):
+          sys.exit()
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
@@ -88,6 +91,9 @@ def combine(L,R):
     return result
 
 def drawMS(array,flag): # still wanna figure out how to draw this
+    for event in pygame.event.get():
+      if (event.type == pygame.QUIT):
+          sys.exit()
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
@@ -99,7 +105,7 @@ def drawMS(array,flag): # still wanna figure out how to draw this
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(.1)
+    time.sleep(1)
 #######################################################
 
 ####################################################QuickSort
@@ -151,6 +157,9 @@ def partition(array, start, end):
     return high
 
 def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
+    for event in pygame.event.get():
+      if (event.type == pygame.QUIT):
+          sys.exit()
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
@@ -166,7 +175,7 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(.5)
 ####################################################
 
 
