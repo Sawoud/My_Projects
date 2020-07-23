@@ -8,7 +8,7 @@ max = 400
 width = 640
 height = 480
 DISPLAY =  None
-
+sec = 1
 #DISPLAY.fill((24,65,171))
 #DISPLAY2 =  pygame.display.set_mode((width, height))
 #DISPLAY2.fill((124,33,65))
@@ -46,7 +46,6 @@ def BubbleSort(array,root):
                array[i+1] = temp
                drawBS(array,i,i+1)
                swap = True
-       print(swap)
 
        j = j + 1
    drawBS(array,-1,-1)
@@ -60,6 +59,8 @@ def BubbleSort(array,root):
              main()
 
 def drawBS(array,z,j):
+    global sec
+    print(sec)
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
@@ -70,6 +71,7 @@ def drawBS(array,z,j):
     x = 0
     Bwidth = width /len(array)
     for i in range(len(array)):
+        print(i)
         Bheight = ((array[i]/max)*height)
         if(i == z or i == j):
             pygame.draw.rect(DISPLAY,(0,255,0),(x,height,Bwidth,-1*Bheight))
@@ -78,7 +80,7 @@ def drawBS(array,z,j):
         #pygame.draw.rect(DISPLAY,(0,0,0),(71*1,200,100,50))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(sec)
 #########################################################################
 
 #######################################################Merge Sort
@@ -134,6 +136,8 @@ def combine(L,R):
     return result
 
 def drawMS(array,flag): # still wanna figure out how to draw this
+    global sec
+    pygame.event.clear()
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
@@ -151,7 +155,7 @@ def drawMS(array,flag): # still wanna figure out how to draw this
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(sec)
 #######################################################
 
 ####################################################QuickSort
@@ -220,6 +224,8 @@ def partition(array, start, end):
     return high
 
 def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
+    global x
+    pygame.event.clear()
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
@@ -227,6 +233,7 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
           pygame.display.quit()
           main()
     DISPLAY.fill((24,65,171))
+    global sec
     x = 0
     Bwidth = width /len(array)
     for i in range(len(array)):
@@ -241,11 +248,26 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(1)
+    time.sleep(sec)
 ####################################################
+def time_delay(time,root):
+    global sec
+    sec = ((float)(time))/1000
+    root.destroy()
 
 
 def main():
+
+        root = Tk()
+        Label(root,text="Time Delay (ms)").grid(row=0)
+
+        e1 = Entry(root)
+        root.title("Sorting Visulizer")
+        e1.grid(row=0, column=1)
+
+        Button(root,text='OK', command= lambda: time_delay(e1.get(),root)).grid(row=3,column=1,sticky=W,pady=4)
+
+        mainloop()
         while True:
             sort = [max,5,2,32,12,42,1,64,55,34,22,254,43,3,13,76,65,23,187,345,213,98,54]
             root = Tk()
