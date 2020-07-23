@@ -3,14 +3,14 @@ import time
 import win32api
 from tkinter import *
 
-# Sorting will be done from smallesst to largest
+# Sorting will be done from smallest to largest
 max = 400
 width = 640
 height = 480
 DISPLAY =  pygame.display.set_mode((width, height))
-DISPLAY2 =  pygame.display.set_mode((width, height))
-DISPLAY.fill((24,65,171))
-DISPLAY2.fill((124,33,65))
+#DISPLAY.fill((24,65,171))
+#DISPLAY2 =  pygame.display.set_mode((width, height))
+#DISPLAY2.fill((124,33,65))
 
 ########################QUIT
 def Quit():
