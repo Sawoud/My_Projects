@@ -7,7 +7,8 @@ from tkinter import *
 max = 400
 width = 640
 height = 480
-DISPLAY =  pygame.display.set_mode((width, height))
+DISPLAY =  None
+
 #DISPLAY.fill((24,65,171))
 #DISPLAY2 =  pygame.display.set_mode((width, height))
 #DISPLAY2.fill((124,33,65))
@@ -15,19 +16,24 @@ DISPLAY =  pygame.display.set_mode((width, height))
 ########################QUIT
 def Quit():
     sys.exit()
+
+def displayinit():
+    global DISPLAY
+    DISPLAY = pygame.display.set_mode((width, height))
 ######################## BUBBLESORT
 def BubbleSort(array,root):
    root.destroy()
    root1 = Tk()
    root1.title("Explanation")
-   text = Text(root1,height = 4)
+   text = Text(root1,height = 6)
    text.insert(INSERT,"Bubble sort works by checking the elements the are beside each other\nand determining whether they need switching or not\n")
-   text.insert(END, "The higlighted elements are the ones getting checked\nClose this window to see the sorting in action")
+   text.insert(END, "The higlighted elements are the ones getting checked\nClose this window to see the sorting in action\nAlso you can click on the screen at anytime to end the visuliztion")
    text.tag_config(root1, justify='center')
    text.pack()
    root1.mainloop()
 
    swap = True
+   displayinit()
    drawBS(array,-1,-1)
    j = 1
    while swap:
@@ -44,12 +50,21 @@ def BubbleSort(array,root):
 
        j = j + 1
    drawBS(array,-1,-1)
+   pygame.event.clear()
+   while True:
+       for event in pygame.event.get():
+         if (event.type == pygame.QUIT):
+             sys.exit()
+         if (event.type == pygame.MOUSEBUTTONDOWN):
+             pygame.display.quit()
+             main()
 
 def drawBS(array,z,j):
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
       if (event.type == pygame.MOUSEBUTTONDOWN):
+          pygame.display.quit()
           main()
     DISPLAY.fill((24,65,171))
     x = 0
@@ -63,7 +78,7 @@ def drawBS(array,z,j):
         #pygame.draw.rect(DISPLAY,(0,0,0),(71*1,200,100,50))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(0.1)
+    time.sleep(1)
 #########################################################################
 
 #######################################################Merge Sort
@@ -71,13 +86,22 @@ def N_MergeSort(array,root):
     root.destroy()
     root1 = Tk()
     root1.title("Explanation")
-    text = Text(root1,height = 6)
-    text.insert(INSERT,"Merge sort works by using a divide and conquer strategy\It keeps dividing the array recursively until it reaches one element\nit then starts going back out and orgnizes the elements based on value\nnow is has semi-sorted mini arrays until it sorts the entire array\n")
-    text.insert(END, "The higlighted elements are the ones getting put in the recurstion stack\nClose this window to see the sorting in action")
+    text = Text(root1,height = 9)
+    text.insert(INSERT,"Merge sort works by using a divide and conquer strategy\nIt keeps dividing the array recursively until it reaches one element\nit then starts going back out and orgnizes the elements based on value\nnow is has semi-sorted mini arrays until it sorts the entire array\n")
+    text.insert(END, "The higlighted elements are the ones getting put in the recurstion stack\nClose this window to see the sorting in action\nAlso you can click on the screen at anytime to end the visuliztion")
     text.tag_config(root1, justify='center')
     text.pack()
     root1.mainloop()
+    displayinit()
     MergeSort(array)
+    pygame.event.clear()
+    while True:
+        for event in pygame.event.get():
+          if (event.type == pygame.QUIT):
+              sys.exit()
+          if (event.type == pygame.MOUSEBUTTONDOWN):
+              pygame.display.quit()
+              main()
 
 def MergeSort(array):
     drawMS(array,1)
@@ -114,6 +138,7 @@ def drawMS(array,flag): # still wanna figure out how to draw this
       if (event.type == pygame.QUIT):
           sys.exit()
       if (event.type == pygame.MOUSEBUTTONDOWN):
+          pygame.display.quit()
           main()
     DISPLAY.fill((24,65,171))
     x = 0
@@ -132,7 +157,24 @@ def drawMS(array,flag): # still wanna figure out how to draw this
 ####################################################QuickSort
 def N_QuickSort(array, start, end,root):
     root.destroy()
+    root1 = Tk()
+    root1.title("Explanation")
+    text = Text(root1,height = 8)
+    text.insert(INSERT,"Quick sort works by choosing a pivot\nitems smaller than the pivot are placed to the left while items larger are\nplaced to the right\nIt keeps doing the recursivly to both sides of the pivot until array is sorted\n")
+    text.insert(END, "The higlighted elements are the ones getting put in the recurstion stack\nClose this window to see the sorting in action\nAlso you can click on the screen at anytime to end the visuliztion")
+    text.tag_config(root1, justify='center')
+    text.pack()
+    root1.mainloop()
+    displayinit()
     QuickSort(array, start, end)
+    pygame.event.clear()
+    while True:
+        for event in pygame.event.get():
+          if (event.type == pygame.QUIT):
+              sys.exit()
+          if (event.type == pygame.MOUSEBUTTONDOWN):
+              pygame.display.quit()
+              main()
 
 def QuickSort(array, start, end):
     print(array)
@@ -182,6 +224,7 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
       if (event.type == pygame.QUIT):
           sys.exit()
       if (event.type == pygame.MOUSEBUTTONDOWN):
+          pygame.display.quit()
           main()
     DISPLAY.fill((24,65,171))
     x = 0
@@ -198,7 +241,7 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         x = x + Bwidth
     pygame.display.update()
-    time.sleep(.5)
+    time.sleep(1)
 ####################################################
 
 
