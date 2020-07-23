@@ -40,6 +40,8 @@ def drawBS(array,z,j):
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
+      if (event.type == pygame.MOUSEBUTTONDOWN):
+          main()
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
@@ -94,6 +96,8 @@ def drawMS(array,flag): # still wanna figure out how to draw this
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
+      if (event.type == pygame.MOUSEBUTTONDOWN):
+          main()
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
@@ -160,6 +164,8 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
+      if (event.type == pygame.MOUSEBUTTONDOWN):
+          main()
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
@@ -184,9 +190,9 @@ def main():
         while True:
             root = Tk()
             root.title("Sorting Visulizer")
-            text = Text(root,height = 1)
-            text.insert(INSERT,"Welocme To the Sorting Visulizer !")
-            text.insert(END, "")
+            text = Text(root,height = 2)
+            text.insert(INSERT,"Welocme To the Sorting Visulizer !\n")
+            text.insert(END, "If you would like to stop any algorithm, just click the display")
             text.tag_config(root, justify='center')
             text.pack()
             button_1 = Button(root,text="\t Option 1: Bubble Sort\t",command= lambda: BubbleSort(sort,root))
