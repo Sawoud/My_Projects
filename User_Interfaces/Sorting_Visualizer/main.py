@@ -18,6 +18,15 @@ def Quit():
 ######################## BUBBLESORT
 def BubbleSort(array,root):
    root.destroy()
+   root1 = Tk()
+   root1.title("Explanation")
+   text = Text(root1,height = 4)
+   text.insert(INSERT,"Bubble sort works by checking the elements the are beside each other\nand determining whether they need switching or not\n")
+   text.insert(END, "The higlighted elements are the ones getting checked\nClose this window to see the sorting in action")
+   text.tag_config(root1, justify='center')
+   text.pack()
+   root1.mainloop()
+
    swap = True
    drawBS(array,-1,-1)
    j = 1
@@ -60,6 +69,14 @@ def drawBS(array,z,j):
 #######################################################Merge Sort
 def N_MergeSort(array,root):
     root.destroy()
+    root1 = Tk()
+    root1.title("Explanation")
+    text = Text(root1,height = 6)
+    text.insert(INSERT,"Merge sort works by using a divide and conquer strategy\It keeps dividing the array recursively until it reaches one element\nit then starts going back out and orgnizes the elements based on value\nnow is has semi-sorted mini arrays until it sorts the entire array\n")
+    text.insert(END, "The higlighted elements are the ones getting put in the recurstion stack\nClose this window to see the sorting in action")
+    text.tag_config(root1, justify='center')
+    text.pack()
+    root1.mainloop()
     MergeSort(array)
 
 def MergeSort(array):
@@ -186,8 +203,8 @@ def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
 
 
 def main():
-        sort = [max,5,2,32,12,42,1,64,55,34,22,254,43,3,13,76,65,23,187,345,213,98,54]
         while True:
+            sort = [max,5,2,32,12,42,1,64,55,34,22,254,43,3,13,76,65,23,187,345,213,98,54]
             root = Tk()
             root.title("Sorting Visulizer")
             text = Text(root,height = 2)
@@ -201,7 +218,7 @@ def main():
             button_2.pack()
             button_3 = Button(root,text="\t Option 3: Quick Sort\t",command = lambda: N_QuickSort(sort,0,len(sort)-1,root))
             button_3.pack()
-            button_4 = Button(text = '\tQUIT\t', command= Quit)
+            button_4 = Button(text = 'QUIT', command= Quit)
             button_4.pack()
             root.mainloop()
 
