@@ -49,7 +49,6 @@ def BubbleSort(array,root):
 
        j = j + 1
    drawBS(array,-1,-1)
-   pygame.event.clear()
    while True:
        for event in pygame.event.get():
          if (event.type == pygame.QUIT):
@@ -96,7 +95,6 @@ def N_MergeSort(array,root):
     root1.mainloop()
     displayinit()
     MergeSort(array)
-    pygame.event.clear()
     while True:
         for event in pygame.event.get():
           if (event.type == pygame.QUIT):
@@ -137,13 +135,7 @@ def combine(L,R):
 
 def drawMS(array,flag): # still wanna figure out how to draw this
     global sec
-    pygame.event.clear()
-    for event in pygame.event.get():
-      if (event.type == pygame.QUIT):
-          sys.exit()
-      if (event.type == pygame.MOUSEBUTTONDOWN):
-          pygame.display.quit()
-          main()
+
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
@@ -153,6 +145,12 @@ def drawMS(array,flag): # still wanna figure out how to draw this
             pygame.draw.rect(DISPLAY,(0,255,0),(x,height,Bwidth,-1*Bheight))
         else:
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
+        for event in pygame.event.get():
+          if (event.type == pygame.QUIT):
+              sys.exit()
+          if (event.type == pygame.MOUSEBUTTONDOWN):
+              pygame.display.quit()
+              main()
         x = x + Bwidth
     pygame.display.update()
     time.sleep(sec)
@@ -171,7 +169,6 @@ def N_QuickSort(array, start, end,root):
     root1.mainloop()
     displayinit()
     QuickSort(array, start, end)
-    pygame.event.clear()
     while True:
         for event in pygame.event.get():
           if (event.type == pygame.QUIT):
@@ -225,7 +222,6 @@ def partition(array, start, end):
 
 def drawQS(array,pivot,high,low): # still wanna figure out how to draw this
     global x
-    pygame.event.clear()
     for event in pygame.event.get():
       if (event.type == pygame.QUIT):
           sys.exit()
