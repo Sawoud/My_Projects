@@ -46,6 +46,7 @@ def show_orders(request,username):
 def getrid(request,username,food_id):
     UserOrder.objects.all().filter(username = username).filter(id = food_id).delete()
     userorders = UserOrder.objects.all().filter(username = username)
+    price = 0
     for userorder in userorders:
         price = price + userorder.Order.price
     return render(request,'orders/orderpage.html',{'userorders':userorders},{'price':price})
