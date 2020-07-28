@@ -28,43 +28,6 @@ class State():
             self.wT = not self.wT
             print(self.board)
 
-
-    def getValid(self):
-        print("pawn")
-        return self.getPossible()
-
-    def getPossible(self):
-        print("pawn1")
-        moves = []
-        for r in range (len(self.board)):
-            print("pawn2")
-            for c in range(len(self.board[r])):
-                print("pawn3")
-                turn = self.board[r][c][0]
-                if(turn == 'w'and self.wT) or (turn == 'b' and (not self.wT)):
-                    piece = self.board[r][c][1]
-                    if piece == 'p':
-                        self.getPawnMoves()
-                    # if piece == 'R':
-                    #     self.getRookMoves()
-                    # if piece == 'N':
-                    #     self.getKnightMoves()
-                    # if piece == 'B':
-                    #     self.getBishopMoves()
-                    # if piece == 'Q':
-                    #     self.getQueenMoves()
-                    # if piece == 'K':
-                    #     self.getKingMoves()
-            return moves
-
-    def getPawnMoves(self,r,c,moves):
-        if self.wT:
-            if self.board[r-1][c]=="--":
-                moves.append(Move((r,c),(r-1,c),self.board))
-                if ((r == 6) and (self.board[r-2][c] == "--")):
-                    moves.append(Move((r,c),(r-2,c),self.board))
-
-
 class Move():
     ranksToRows = {"1":7,"2":6,"3":5,"4":4,"5":3,"6":2,"7":1,"8":0}
     rowsToRanks = {v:k for k,v in ranksToRows.items()}
