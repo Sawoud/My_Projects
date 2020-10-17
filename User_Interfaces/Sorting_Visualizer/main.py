@@ -2,6 +2,8 @@ import pygame, sys
 import time
 import win32api
 from tkinter import *
+import winsound
+
 
 # Sorting will be done from smallest to largest
 max = 400
@@ -34,21 +36,21 @@ def BubbleSort(array,root):
 
    swap = True
    displayinit()
-   drawBS(array,-1,-1)
+   drawBS(array,-1,-1,False)
    j = 1
    while swap:
        swap = False
        for i in range(len(array)-j):
-           drawBS(array,i,i+1)
+           drawBS(array,i,i+1,False)
            if (array[i] > array[i+1]):
                temp = array[i]
                array[i] = array[i+1]
                array[i+1] = temp
-               drawBS(array,i,i+1)
+               drawBS(array,i,i+1,True)
                swap = True
 
        j = j + 1
-   drawBS(array,-1,-1)
+   drawBS(array,-1,-1,False)
    while True:
        for event in pygame.event.get():
          if (event.type == pygame.QUIT):
@@ -57,7 +59,7 @@ def BubbleSort(array,root):
              pygame.display.quit()
              main()
 
-def drawBS(array,z,j):
+def drawBS(array,z,j,sound):
     global sec
     print(sec)
     for event in pygame.event.get():
@@ -69,10 +71,14 @@ def drawBS(array,z,j):
     DISPLAY.fill((24,65,171))
     x = 0
     Bwidth = width /len(array)
+    flag = 1
     for i in range(len(array)):
         print(i)
         Bheight = ((array[i]/max)*height)
         if(i == z or i == j):
+            if sound and flag:
+                flag = 0
+                winsound.Beep(500,200)
             pygame.draw.rect(DISPLAY,(0,255,0),(x,height,Bwidth,-1*Bheight))
         else:
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
@@ -141,9 +147,11 @@ def drawMS(array,flag): # still wanna figure out how to draw this
     Bwidth = width /len(array)
     for i in range(len(array)):
         Bheight  = ((array[i]/max)*height)
-        if (i<len(array)//2 and flag == 1):
+        if (i<len(array)//2 and flag):
+            winsound.Beep(1000,300)
             pygame.draw.rect(DISPLAY,(0,255,0),(x,height,Bwidth,-1*Bheight))
         else:
+            winsound.Beep(1000,300)
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         for event in pygame.event.get():
           if (event.type == pygame.QUIT):

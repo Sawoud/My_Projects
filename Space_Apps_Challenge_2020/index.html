@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link href = "page3.css" rel = "stylesheet" type = "text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 47%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
+
+canvas {
+    position:relative;
+
+    border:1px solid #d3d3d3;
+    background-image: url("background.png")
+}
+
+</style>
+</head>
+<body onload="startGame()">
+
+<script>
+
+var mySpaceShip;
+var myObstacles = [];
+var myScore;
+var earth = {x:400,y:320,r:135}
+var myJunk = [new component (15,15,"blue",150,320, "junk"), new component (15,15,"green",400,120, "junk"),new component(20,20,"brown",150,320,"junk"),
+              new component (10,10,"red",150,320, "junk"), new component (5,5,"yellow",150,320, "junk"), new component (25,25,"purple",150,320, "junk")];
+var score = 0;
+
+function startGame() {
+    mySpaceShip = new component(30, 30, "red", 100, 100, "ship");
+    mySpaceShip.gravity = 0.00005;
+    mySpaceShip.accelerate = 0.0005;
+    myScore = new component("20px", "Consolas", "white", 280, 40, "text");
+    myGameArea.start();
+}
+
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    start : function() {
+        this.canvas.width = 800;
+        this.canvas.height = 640;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        window.addEventListener('keydown', function (e) {
+            myGameArea.key = e.keyCode;
+        })
+        window.addEventListener('keyup', function (e) {
+            myGameArea.key = false;
+        })
+        },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+
+
+
+
+
+function component(width, height, color, x, y, type) {// this function declares the component
+    this.type = type;
+    this.score = 0;
+    this.center = 0
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.x = x;
+    this.y = y;
+    this.gravity = 0;
+    this.accelerate = 0;
+    this.horizantalSpeed = 0;
+    this.gravitySpeed = 0;
+    if (this.type === "junk"){
+      var trajMatrix = [["TestSat",400,320,250,200], ["TestSat",400,320,320,170], ["TestSat",400,320,200,260],
+                        ["TestSat",400,320,300,220], ["TestSat",400,320,330,230], ["TestSat",400,320,160,200]];
+      this.PositionalMatrix = trajMatrix[Math.floor((Math.random()*(trajMatrix.length)))];
+      this.speedX = (1+Math.random()*4);
+      this.x = 400 - this.PositionalMatrix[3];
+      this.y = 320
+    }
+    this.direc = true;
+    this.update = function() {
+
+        ctx = myGameArea.context;
+        if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+
+            ctx.rect(0, 0, this.x, this.y);
+            ctx.fillStyle = color
+            ctx.fillText(this.text, this.x, this.y);
+
+        }
+        if(this.type == "ship")
+        {
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            // ctx.moveTo(60+this.x,60+this.y);
+            // ctx.lineTo(80+this.x,40+this.y);
+            // ctx.lineTo(60+this.x,20+this.y);
+            ctx.moveTo(0+this.x,0+this.y);
+            ctx.lineTo(30+this.x,15+this.y);
+            ctx.lineTo(0+this.x,30+this.y);
+            ctx.fill();
+            // ctx.beginPath();
+            // ctx.arc(400,320,120,0,2*Math.PI);
+            // ctx.stroke()
+        }
+        if(this.type =="junk"){
+          ctx.fillStyle = color;
+          //ctx.fillRect(this.x, this.y, this.width, this.height);
+          ctx.beginPath();
+          ctx.arc(this.x,this.y,this.width,0,2*Math.PI);
+          ctx.fill();
+          ctx.stroke();
+        }
+    }
+    this.newPos = function() {
+        this.gravitySpeed += this.gravity;
+        this.horizantalSpeed += this.accelerate;
+        document.getElementById("speed").innerHTML ="Your Speed Is: " + Math.floor(2000*(this.gravitySpeed**2 + this.horizantalSpeed**2)**(1/2))+ "m/s";
+        document.getElementById("speed").style.color = "black";
+
+        this.x += this.speedX + this.horizantalSpeed;
+        this.y += this.speedY + this.gravitySpeed;
+    }
+    this.Prop = function(){
+      //Attempt to find the new position of y based on a step in the x direction (standard eliptical propogation)
+
+      var Cx = this.PositionalMatrix[1];
+      var Cy = this.PositionalMatrix[2];
+      var Rx = this.PositionalMatrix[3];
+      var Ry = this.PositionalMatrix[4];
+      var x = this.x;
+      var y = this.y;
+      y = (Ry**2) - ((Ry**2)*(((Math.abs(this.x-Cx))**2))/(Rx**2));
+      y = (y**(1/2));
+      //this.PositionalMatrix[1]=x
+      //this.PositionalMatrix[2]=y;
+      console.log(y);
+      if(this.direc){
+      this.x += this.speedX;
+      this.y = -y + Cy;
+        if (this.x === Cx+Rx || this.x > Cx+Rx){
+          this.direc = false;
+        }
+      }
+      else{
+        this.x -= this.speedX;
+        this.y = y + Cy;
+        if (this.x === Cx-Rx || this.x < Cx-Rx ){
+          this.direc = true;
+        }
+      }
+
+    }
+
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var Hcenter = (myleft+myright)/2
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var Vcenter = (mytop+mybottom)/2
+
+        // var earth.x = 400;
+        // var earth.y = 320;
+         var crash = false;
+        // earth
+
+        var pythagx = (earth.x-Hcenter)**2
+        var pythagy= (earth.y-Vcenter)**2
+        var pythag = (pythagx+pythagy)**(1/2)
+
+        if (pythag <= earth.r){
+          crash = true;
+          document.getElementById("speed").innerHTML = "You Crashed :(\n you got a score of: " + score;
+          document.getElementById("speed").style.color = "red";
+          setTimeout(time, 1000);
+
+        }
+        if (this.x<-50 || this.x>850 ||this.y<-50 || this.y>650 ){
+          crash = true;
+          document.getElementById("speed").innerHTML = "You escaped the Earth's field :(\n you got a score of: " + score;
+          document.getElementById("speed").style.color = "red";
+          setTimeout(time, 1000);
+
+      }
+        return crash;
+    }
+
+
+
+    this.collect = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var Hcenter = (myleft+myright)/2
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var Vcenter = (mytop+mybottom)/2
+
+        var collected = false;
+        // earth
+
+        var pythagx = (otherobj.x-Hcenter)**2
+        var pythagy= (otherobj.y-Vcenter)**2
+        var pythag = (pythagx+pythagy)**(1/2)
+
+        if (pythag <= ((otherobj.width+otherobj.height)/2)+4){
+          collected = true;
+        if (otherobj.width >= 20){
+            document.getElementById("junk").innerHTML = "You got big Space Junk!! Double Points";
+            document.getElementById("junk").style.color = "green";
+        } else{
+          document.getElementById("junk").innerHTML = "You got Space Junk!!";
+          document.getElementById("junk").style.color = "green";
+        }
+        i = height = Math.floor(Math.random()*(info.length));
+
+          document.getElementById("info").innerHTML = info[i][0];
+          document.getElementById("infopic").src= info[i][1] ;
+
+        }
+        return collected;
+    }
+
+}
+var NoCollected = 0;
+// var info = ["https://www.nasa.gov/mission_pages/station/news/orbital_debris.html","https://www.nasa.gov/centers/hq/library/find/bibliographies/space_debris",
+// "https://www.youtube.com/watch?v=IOwv1j-fUbo&ab_channel=NASAVideo"]; // These the resources used
+//https://i.pinimg.com/originals/ba/7a/c4/ba7ac448f85ab6fa6ad51e0ebe919273.jpg
+// https://i2.wp.com/ufuqnews.com/una/wp-content/uploads/2020/01/photo_2020-01-30_13-17-20.jpg?resize=877%2C635&ssl=1
+//https://s.yimg.com/ny/api/res/1.2/Dbaoat0c6wyMkI94NNsUsQ--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MA--/https://media.zenfs.com/en/motorious_297/0433fcf27ee9e71bd21b66b7cd37799a
+// https://aerospace.org/node/4151/printable/print
+var info = [
+  ["Satellites that have reached the end of their life \n or Satellites and spacecraft that have failed\n are examples of space Debris.", "old.jpg"],
+  ["Rocket stages that have launched satellites into space\n are examples of space Debris.", "rocket.jpg"],
+  ["Waste from active satlitles\n are examples of space Debris.", "waste.jpg"],
+  ["Peeling paint\n are examples of space Debris.", "paint.jpg"],
+  ["Fragmets from collitions\n are examples of space Debris.", "collistion.jpg"],
+  ["What solutions can you think of for solving this problem?","clean.jpg"]
+  ];
+
+function time(){location.reload();}
+
+function updateGameArea() {
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (mySpaceShip.crashWith(myObstacles[i])) {
+            return;
+        }
+    }
+
+    for (i = 0; i < myJunk.length; i += 1) {
+      if(mySpaceShip.collect(myJunk[i])){
+        if(myJunk[i].width >= 20){
+          score += 2;
+        }
+        else{
+          score += 1;
+        }
+        myJunk.splice(i,1);
+      }
+    }
+var flag = 0;
+    if(myJunk.length == 0){
+     //Give a victory screen!!
+     document.getElementById("junk").innerHTML = "YOU COLLECTED ALL THE SPACE JUNK !!!!";
+     document.getElementById("junk").style.color = "blue";
+     setTimeout(time, 2500);
+    }
+
+    myGameArea.clear();
+    mySpaceShip.speedX = 0;
+    mySpaceShip.speedY = 0;
+    if (myGameArea.key && myGameArea.key == 37) {mySpaceShip.accelerate = -0.025;}
+    if (myGameArea.key && myGameArea.key == 39) {mySpaceShip.accelerate = 0.025;}
+    if (myGameArea.key && myGameArea.key == 38) {mySpaceShip.gravity = -0.025;}
+    if (myGameArea.key && myGameArea.key == 40) {mySpaceShip.gravity = 0.025;}
+
+
+
+    myGameArea.frameNo += 1;
+    if (myGameArea.frameNo == 1 || everyinterval(150)) {
+        x = myGameArea.canvas.width;
+        minHeight = 20;
+        maxHeight = 200;
+        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+        minGap = 50;
+        maxGap = 200;
+        gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+        myObstacles.push(new component(10, height, "green", x, 0));
+        myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+    }
+
+    //myScore.text="SCORE: " + myGameArea.frameNo;
+    myScore.text="SPACE DEBRIS COLLECTED: " + score;
+    myScore.update();
+    mySpaceShip.newPos();
+    mySpaceShip.update();
+    var earthfield = .002
+    if(mySpaceShip.x<400 && mySpaceShip.y<320){mySpaceShip.accelerate = earthfield;mySpaceShip.gravity = earthfield;}//
+    if(mySpaceShip.x<400 && mySpaceShip.y>320){mySpaceShip.accelerate = earthfield;mySpaceShip.gravity = -earthfield;}//
+    if(mySpaceShip.x>400 && mySpaceShip.y<320){mySpaceShip.accelerate = -earthfield;mySpaceShip.gravity = earthfield;}//
+    if(mySpaceShip.x>400 && mySpaceShip.y>320){mySpaceShip.accelerate = -earthfield;mySpaceShip.gravity = -earthfield;}//
+
+    mySpaceShip.newPos();
+    mySpaceShip.update();
+    var i;
+    for (i=0; i< myJunk.length;i++){
+      myJunk[i].Prop();
+      myJunk[i].update();
+    }
+
+
+}
+
+function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+}
+
+//Not Needed I think
+function SatMotionPropogate (ModdingArray){
+    //Attempt to find the new position of y based on a step in the x direction (standard eliptical propogation)
+    var x = ModdingArray[1];
+    var y = ModdingArray[2];
+    var Rx = ModdingArray[3];
+    var Ry = ModdingArray[4];
+    x = x +0.5; //Move in half unit intervals
+    y = Math.pow(Ry,2)- ((Math.pow(Ry,2)*Math.pow(x,2))/Math.pow(Rx,2));
+    y = Math.sqrt(y);
+    CurrentX=this.x;
+}
+
+function Pause(){alert("pause")}
+</script>
+
+<br>
+
+
+<div class="split left">
+  <div class="centered">
+
+  </div>
+</div>
+
+<div class="split right">
+  <div class="centered">
+        <h4>WELCOME TO</h4>
+         <h3>Space Junk Mania!</h3>
+    <p>There are nearly 6000 tons of space debris in Earths orbit.
+      This debris can move at speeds of up to 18’000 miles per hour and poses a serious threat of causing damage to satellites and space ships. </p>
+      <!--https://www.nasa.gov/centers/hq/library/find/bibliographies/space_debris. -->
+    <button type="button" onclick="Pause()">Pause</button>
+
+    <div id = "info"></div>
+
+    <div><img id="infopic" src="" width="300px"></div>
+    <div id = "speed"></div>
+    <div id = "junk"></div>
+    <p>Use arrow keys to move</p>
+
+</div>
+
+</body>
+</html>
