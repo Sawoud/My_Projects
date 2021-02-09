@@ -1,0 +1,6 @@
+Lower Rate Limit(54)
+Upper Rate Limit(120)
+Fixed AV Delay(150)
+Atrial Pulse Width(0.4)
+Ventricular Amplitude(3.5)
+Ventricular Pulse Width(0.4)

@@ -1,0 +1,7 @@
+Lower Rate Limit(60)
+Upper Rate Limit(120)
+Ventricular Amplitude(3.5)
+Ventricular Pulse Width(0.4)
+Ventricular Sensitivity(2.5)
+Hysteresis(0)
+Rate Smoothing(0)

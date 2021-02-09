@@ -1,8 +1,8 @@
 import pygame, sys
 import time
-import win32api
+#import win32api
 from tkinter import *
-import winsound
+#import winsound
 
 
 # Sorting will be done from smallest to largest
@@ -78,7 +78,7 @@ def drawBS(array,z,j,sound):
         if(i == z or i == j):
             if sound and flag:
                 flag = 0
-                winsound.Beep(500,200)
+                #winsound.Beep(500,200)
             pygame.draw.rect(DISPLAY,(0,255,0),(x,height,Bwidth,-1*Bheight))
         else:
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
@@ -148,10 +148,10 @@ def drawMS(array,flag): # still wanna figure out how to draw this
     for i in range(len(array)):
         Bheight  = ((array[i]/max)*height)
         if (i<len(array)//2 and flag):
-            winsound.Beep(1000,300)
+            #winsound.Beep(1000,300)
             pygame.draw.rect(DISPLAY,(0,255,0),(x,height,Bwidth,-1*Bheight))
         else:
-            winsound.Beep(1000,300)
+            #winsound.Beep(1000,300)
             pygame.draw.rect(DISPLAY,(0,0,0),(x,height,Bwidth,-1*Bheight))
         for event in pygame.event.get():
           if (event.type == pygame.QUIT):

@@ -1,0 +1,4 @@
+Lower Rate Limit(76)
+Upper Rate Limit(95)
+Ventricular Amplitude(3.5)
+Ventricular Pulse Width(0.4)

@@ -5,11 +5,14 @@
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.Random.*;
 
 public class allos_codegameof21
 {
     public static void main (String[] args)
     {
+      Random random = new Random();
+
         int loop = 1; // this variable is to make the program loop
 
         //Variable declaration
@@ -49,19 +52,19 @@ public class allos_codegameof21
                 System.out.println ("Please choose one of the following options \"yes\" or \"no\"");
                 third = kbReader3.nextLine ();
             }
-            if (third .equals("yes")) 
+            if (third .equals("yes"))
             {
                 Player.Card3(); // this is if the player wants anthor card
             }
             System.out.println ("");
             Computer.Card1();
             Computer.Card2();
-            if (Computer.Tally () <= 14) // this gives another card to the computer if its propbly not going to go over 21
+            if (random.nextBoolean()) // this gives another card to the computer if its propbly not going to go over 21
             {
-                Computer.Card3 (); 
+                Computer.Card3 ();
             }
 
-            //Processing 
+            //Processing
             System.out.println ("");
             System.out.println (name + "'s Total is " + Player.Tally ());
             System.out.println ("Computer's Total is " + Computer.Tally ());
@@ -76,7 +79,7 @@ public class allos_codegameof21
                 System.out.println ("Please choose one of the following options \"yes\" or \"no\"");
                 choice = kbReader2.nextLine ();
             }
-            if (choice .equals("yes")) 
+            if (choice .equals("yes"))
             {
                 loop = loop + 1;
                 Player.Repeat ();
