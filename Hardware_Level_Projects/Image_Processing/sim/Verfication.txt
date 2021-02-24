@@ -1,0 +1,28 @@
+Fetch S (0.61 us - 1.97 us) :
+  As it can be seen:
+    - You can see Fs' run through its states then stops.
+    - Two data values from the SRAM_read_data registers are taken and put in write_data_a[0]
+    - fs_prime_states becomes IDLE after it has finished.
+    - Takes 1.34 us to operate (64 cc)
+    - You can see it is happening again in parallel with Cs (CS_state changes to indicate its operation)
+
+Compute T (2.03 us - 4.71 us) :
+  As it can be seen:
+    - CT runs through its states then it goes into IDLE.
+    - Looking at it in waves, it is approximately 2 times larger than FS' (to be excepted ~ 128cc)
+    - MAC units are incremented from read_data_b[0] line (coming from RAM 1 where FS' has written its values)
+    - After every common case, 4 values are written to RAM 2
+    - Takes 2.68 us to operate
+
+Compute S (4.77 us - 9.87 us) :
+  As it can be seen:
+    - CS runs through its states then it goes into IDLE.
+    - MAC units are incremented from read_data_a[1] and read_data_b[1] registers
+    - Before writing the values to RAM 3, clipping occurs
+    - After every common case (8 cc), 4 values are written to RAM 2
+    - Takes 5.1 us to operate
+
+Compute S (9.87 us - 10.55 us) :
+  The test bench kills the operation of the design due to their being more than 10 mismatches:
+    - It can be seen though that the design is taking the values...
+    ...and writing them into the correct SRAM_address
